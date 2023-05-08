@@ -14,7 +14,7 @@ module.exports.getMovies = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.createMovie = (req, res, next) => {
+module.exports.postMovies = (req, res, next) => {
   const {
     country,
     director,
@@ -31,7 +31,7 @@ module.exports.createMovie = (req, res, next) => {
 
   const { _id } = req.user;
 
-  Moviescreate({
+  Movies.create({
     country,
     director,
     duration,
@@ -45,7 +45,7 @@ module.exports.createMovie = (req, res, next) => {
     movieId,
     owner: _id,
   })
-    .then((movie) => res.status(STATUS_CODE_CREATED).send(movie))
+    .then((movie) => res.status(201).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создании фильма'));
@@ -55,7 +55,7 @@ module.exports.createMovie = (req, res, next) => {
     });
 };
 
-module.exports.deleteMovie = (req, res, next) => {
+module.exports.deleteMovies = (req, res, next) => {
   const { _id } = req.user;
   Movies.findOne({ movieId: req.params.movieId, owner: _id })
     .orFail()
