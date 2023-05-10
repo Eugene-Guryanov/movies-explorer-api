@@ -15,6 +15,7 @@ const { login, createUser } = require('./controllers/users');
 const { auth } = require('./middlewares/auth');
 const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const limiter = require('./middlewares/rateLimiter');
 
 const app = express();
 const allowedCors = [
@@ -48,6 +49,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(requestLogger);
+app.use(helmet());
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -55,6 +57,7 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
+app.use(limiter);
 app.post('/signin', loginValidation, login);
 app.post('/signup', userValidation, createUser);
 app.use('/', auth, userRouter);
