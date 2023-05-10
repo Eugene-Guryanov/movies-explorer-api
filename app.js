@@ -18,11 +18,11 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 const allowedCors = [
-  'http://localhost:3000',
-  'ges.nomoredomains.monster',
-  'localhost:3000',
-  'https://ges.nomoredomains.monster',
-  'http://ges.nomoredomains.monster',
+  'http://localhost:3000/api',
+  'ges.nomoredomains.monster/api',
+  'localhost:3000/api',
+  'https://ges.nomoredomains.monster/api',
+  'http://ges.nomoredomains.monster/api',
 ];
 app.use((req, res, next) => {
   const { origin } = req.headers;
