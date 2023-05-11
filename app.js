@@ -42,7 +42,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, mongoAddress } = process.env;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -72,7 +72,7 @@ app.use(errors());
 
 app.use(centralizedErrorHandler);
 
-mongoose.connect('mongodb://0.0.0.0:27017/bitfilmsdb');
+mongoose.connect(mongoAddress);
 
 app.listen(PORT, () => {
   // Если всё работает, консоль покажет, какой порт приложение слушает
