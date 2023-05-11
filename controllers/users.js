@@ -60,6 +60,8 @@ module.exports.updateUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Ошибка валидации'));
+      } else if (err.codeName === 'DuplicateKey') {
+        next(new ConflictError('Данный email уже зарегистрирован!'));
       } else {
         next(err);
       }

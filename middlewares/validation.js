@@ -1,5 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
-
+Joi.objectId = require('joi-objectid')(Joi);
 
 module.exports.urlRegExp = /(http:\/\/|https:\/\/)(www)*[a-z0-9\-\.\_\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]+\.(ru|com)(:\d{2,5})?((\/.+)+)?\/?#?/;
 
@@ -35,9 +35,9 @@ module.exports.userInfoValidation = celebrate({
 });
 
 module.exports.deleteMovieValidation = celebrate({
-  params: Joi.object().keys({
-    movieId: Joi.number().required(),
-  }),
+  params: {
+    movieId: Joi.objectId().required(),
+  },
 });
 
 module.exports.loginValidation = celebrate({
