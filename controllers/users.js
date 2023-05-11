@@ -49,10 +49,10 @@ module.exports.getMe = (req, res) => {
     .catch((err) => res.send(err));
 };
 module.exports.updateUser = (req, res, next) => {
-  const { name } = req.body;
+  const { name, email } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { name },
+    { name, email },
     { new: true, runValidators: true },
   )
     .orFail(() => next(new NotFoundError('Пользователь с таким id не найден')))

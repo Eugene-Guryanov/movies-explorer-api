@@ -3,16 +3,11 @@ const AuthError = require('../errors/AuthError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-// eslint-disable-next-line consistent-return
 module.exports.auth = (req, res, next) => {
-// const token = req.cookies.jwt;
-
   const { authorization } = req.headers;
 
-  if (!authorization.startsWith('Bearer')) {
-    return next(new AuthError(
-      'Необходима авторизация!',
-    ));
+  if (!authorization || !authorization.startsWith('Bearer ')) {
+    return next(new AuthError('Необходима авторизация!'));
   }
 
   const token = authorization.split('Bearer ')[1];
@@ -20,7 +15,7 @@ module.exports.auth = (req, res, next) => {
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
-    next(new AuthError('Необходима авторизация!'));
+    next(new AuthError('С токеном что-то не так.'));
   }
   req.user = payload; // записываем пейлоуд в объект запроса
 

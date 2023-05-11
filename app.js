@@ -5,24 +5,24 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
-// const cors = require('cors');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
 const userRouter = require('./routes/users');
 const movieRouter = require('./routes/movies');
 const { loginValidation, userValidation } = require('./middlewares/validation');
-// eslint-disable-next-line import/no-unresolved, import/extensions
 const { login, createUser } = require('./controllers/users');
 const { auth } = require('./middlewares/auth');
 const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const limiter = require('./middlewares/rateLimiter');
 
 const app = express();
 const allowedCors = [
-  'http://localhost:3001',
-  'project.nomoredomains.monster',
-  'localhost:3000',
-  'https://project.nomoredomains.monster',
-  'http://project.nomoredomains.monster',
+  'http://localhost:3000/api',
+  'ges.nomoredomains.monster/api',
+  'localhost:3000/api',
+  'https://ges.nomoredomains.monster/api',
+  'http://ges.nomoredomains.monster/api',
 ];
 app.use((req, res, next) => {
   const { origin } = req.headers;
@@ -48,6 +48,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(requestLogger);
+app.use(helmet());
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -55,6 +56,7 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
+app.use(limiter);
 app.post('/signin', loginValidation, login);
 app.post('/signup', userValidation, createUser);
 app.use('/', auth, userRouter);

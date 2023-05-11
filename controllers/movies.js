@@ -1,4 +1,4 @@
-const Movies = require('../models/movies');
+const Movie = require('../models/movies');
 
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
@@ -6,11 +6,8 @@ const ForbiddenError = require('../errors/ForbiddenError');
 
 module.exports.getMovies = (req, res, next) => {
   const { _id } = req.user;
-  Movies.find({ owner: _id })
-    .then((movies) => {
-      const userMovies = movies.filter((card) => req.user._id === card.owner.toString());
-      return res.send(userMovies);
-    })
+  Movie.find({ owner: _id })
+    .then((movies) => res.send(movies))
     .catch(next);
 };
 
@@ -31,7 +28,7 @@ module.exports.postMovies = (req, res, next) => {
 
   const { _id } = req.user;
 
-  Movies.create({
+  Movie.create({
     country,
     director,
     duration,
@@ -57,7 +54,7 @@ module.exports.postMovies = (req, res, next) => {
 
 module.exports.deleteMovies = (req, res, next) => {
   const { _id } = req.user;
-  Movies.findOne({ movieId: req.params.movieId, owner: _id })
+  Movie.findOne({ movieId: req.params.movieId, owner: _id })
     .orFail()
     .then((movie) => {
       if (req.user._id !== movie.owner._id.toString()) {

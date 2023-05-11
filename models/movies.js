@@ -4,8 +4,6 @@ const { isUrl } = require('validator');
 const movieSchema = new mongoose.Schema({
   country: {
     type: String,
-    minlength: 2,
-    maxlength: 30,
     required: true,
   },
 
@@ -64,6 +62,6 @@ const movieSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-  }
+  },
 }, { versionKey: false });
 module.exports = mongoose.model('movie', movieSchema);
