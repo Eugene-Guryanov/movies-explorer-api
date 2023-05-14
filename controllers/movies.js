@@ -15,29 +15,27 @@ module.exports.postMovies = (req, res, next) => {
     });
 };
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
-    .then((movies) => res.send({ data: movies }))
+  Movie.find({ owner: req.user._id })
+    .then((movies) => res.status(201).send(movies))
     .catch((err) => next(err));
 };
 
 module.exports.deleteMovies = (req, res, next) => {
-  Movie.findById(req.params.movieId)
+  Movie.findById(req.params._id)
     .then((movie) => {
-      if (req.user._id.toString() !== movie.owner.toString()) {
-        return next(new ForbiddenError('Отсутствуют права на удаление фильма'));
+      if (!movie) {
+        throw new NotFoundError('Фильм с указанным id не найден.');
       }
-      return Movie.findByIdAndRemove(req.params.movieId)
-        .then(
-          res.status(201).send(movie),
-        );
+      if (req.user._id.toString() !== movie.owner.toString()) {
+        throw new ForbiddenError('Отсутствуют права на удаление фильма');
+      }
+      return Movie.findByIdAndRemove(req.params._id)
+        .then(() => res.status(200).send(movie));
     })
     .catch((err) => {
-      if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError('Фильм с указанным id не найден'));
-      } else if (err.name === 'CastError') {
-        next(new BadRequestError('Передан некорректный id фильма'));
-      } else {
-        next(err);
+      if (err.name === 'CastError') {
+        return next(new BadRequestError('Передан некорректный id фильма'));
       }
+      return next(err);
     });
 };

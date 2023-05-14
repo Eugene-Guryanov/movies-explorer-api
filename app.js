@@ -42,7 +42,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-const { PORT = 3000, mongoAddress } = process.env;
+const { PORT = 3000, mongoAddress = 'mongodb://0.0.0.0:27017/bitfilmsdb' } = process.env;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -30,38 +30,38 @@ const movieSchema = new mongoose.Schema({
       validator: (url) => isURL(url),
       message: 'Неверный формат url',
     },
-    trailerLink: {
-      type: String,
-      required: true,
-      validate: {
-        validator: (url) => isURL(url),
-        message: 'Неверный формат url',
-      },
+  },
+  trailerLink: {
+    type: String,
+    required: true,
+    validate: {
+      validator: (url) => isURL(url),
+      message: 'Неверный формат url',
     },
-    thumbnail: {
-      type: String,
-      required: true,
-      validate: {
-        validator: (url) => isURL(url),
-        message: 'Неверный формат url',
-      },
+  },
+  thumbnail: {
+    type: String,
+    required: true,
+    validate: {
+      validator: (url) => isURL(url),
+      message: 'Неверный формат url',
     },
-    nameRU: {
-      type: String,
-      required: true,
-    },
-    nameEN: {
-      type: String,
-      required: true,
-    },
-    movieId: {
-      type: Number,
-      required: true,
-    },
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
+  },
+  nameRU: {
+    type: String,
+    required: true,
+  },
+  nameEN: {
+    type: String,
+    required: true,
+  },
+  movieId: {
+    type: Number,
+    required: true,
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
   },
 }, { versionKey: false });
 module.exports = mongoose.model('movie', movieSchema);

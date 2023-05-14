@@ -1,7 +1,14 @@
 const { celebrate, Joi } = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
+const validator = require('validator');
+const BadRequestError = require('../errors/BadRequestError');
 
-module.exports.urlRegExp = /(http:\/\/|https:\/\/)(www)*[a-z0-9\-\.\_\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]+\.(ru|com)(:\d{2,5})?((\/.+)+)?\/?#?/;
+const urlValidation = (value) => {
+  if (validator.isURL(value)) {
+    return value;
+  }
+  throw new BadRequestError('Некорректный URL');
+};
 
 module.exports.userValidation = celebrate({
   body: Joi.object().keys({
@@ -18,9 +25,9 @@ module.exports.postMovieValidation = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required().pattern(this.urlRegExp),
-    trailerLink: Joi.string().required().pattern(this.urlRegExp),
-    thumbnail: Joi.string().required().pattern(this.urlRegExp),
+    image: Joi.string().required().custom(urlValidation),
+    trailerLink: Joi.string().required().custom(urlValidation),
+    thumbnail: Joi.string().required().custom(urlValidation),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
     movieId: Joi.number().required(),
@@ -35,9 +42,9 @@ module.exports.userInfoValidation = celebrate({
 });
 
 module.exports.deleteMovieValidation = celebrate({
-  params: {
-    movieId: Joi.objectId().required(),
-  },
+  params: Joi.object().keys({
+    _id: Joi.objectId().required(),
+  }),
 });
 
 module.exports.loginValidation = celebrate({
