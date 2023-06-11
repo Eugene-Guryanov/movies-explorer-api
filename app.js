@@ -23,6 +23,10 @@ const allowedCors = [
   'http://localhost:3000',
   'https://ges.nomoredomains.rocks',
   'http://ges.nomoredomains.rocks',
+  'http://localhost:3001/api',
+  'http://localhost:3000/api',
+  'https://ges.nomoredomains.rocks/api',
+  'http://ges.nomoredomains.rocks/api',
 ];
 app.use((req, res, next) => {
   const { origin } = req.headers;
