@@ -19,10 +19,9 @@ const { centralizedErrorHandler } = require('./middlewares/centralizedErrorHandl
 
 const app = express();
 const allowedCors = [
-  'http://localhost:3000/api',
-  'ges.nomoredomains.monster/api',
-  'https://ges.nomoredomains.monster/api',
-  'http://ges.nomoredomains.monster/api',
+  'http://localhost:3001',
+  'https://ges.nomoredomains.rocks',
+  'http://ges.nomoredomains.rocks',
 ];
 app.use((req, res, next) => {
   const { origin } = req.headers;

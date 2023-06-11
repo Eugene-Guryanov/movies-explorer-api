@@ -45,7 +45,7 @@ module.exports.login = (req, res, next) => {
 
 module.exports.getMe = (req, res) => {
   User.findById(req.user._id)
-    .then((currentUser) => res.send({ currentUser }))
+    .then((currentUser) => res.send(currentUser))
     .catch((err) => res.send(err));
 };
 module.exports.updateUser = (req, res, next) => {
@@ -56,7 +56,7 @@ module.exports.updateUser = (req, res, next) => {
     { new: true, runValidators: true },
   )
     .orFail(() => next(new NotFoundError('Пользователь с таким id не найден')))
-    .then((userData) => res.send({ data: userData }))
+    .then((userData) => res.send(userData))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Ошибка валидации'));
