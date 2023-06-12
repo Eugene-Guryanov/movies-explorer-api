@@ -45,7 +45,7 @@ module.exports.login = (req, res, next) => {
 
 module.exports.getMe = (req, res) => {
   User.findById(req.user._id)
-    .then((currentUser) => res.send({ currentUser }))
+    .then((currentUser) => res.send(currentUser))
     .catch((err) => res.send(err));
 };
 module.exports.updateUser = (req, res, next) => {
