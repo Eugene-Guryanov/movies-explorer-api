@@ -23,10 +23,6 @@ const allowedCors = [
   'http://localhost:3000',
   'https://ges.nomoredomains.rocks',
   'http://ges.nomoredomains.rocks',
-  'http://localhost:3001/api',
-  'http://localhost:3000/api',
-  'https://ges.nomoredomains.rocks/api',
-  'http://ges.nomoredomains.rocks/api',
 ];
 app.use((req, res, next) => {
   const { origin } = req.headers;
@@ -46,7 +42,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-const { PORT = 3000, mongoAddress = 'mongodb://0.0.0.0:27017/bitfilmsdb' } = process.env;
+const { PORT = 3000, mongoAddress = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
