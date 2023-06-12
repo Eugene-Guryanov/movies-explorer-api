@@ -4,7 +4,7 @@ const {
   updateUser, getMe,
 } = require('../controllers/users');
 
-router.get('/users/me', getMe);
-router.patch('/users/me', userInfoValidation, updateUser);
+router.get('/api/users/me', getMe);
+router.patch('/api/users/me', userInfoValidation, updateUser);
 
 module.exports = router;
