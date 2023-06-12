@@ -61,10 +61,10 @@ app.get('/crash-test', () => {
 });
 
 app.use(limiter);
-app.post('/api/signin', loginValidation, login);
-app.post('/api/signup', userValidation, createUser);
+app.post('/signin', loginValidation, login);
+app.post('/signup', userValidation, createUser);
 app.use('/', auth, userRouter);
-app.use('/api/', auth, movieRouter);
+app.use('/', auth, movieRouter);
 
 app.use('*', auth, () => {
   throw new NotFoundError('По указаному url ничего нет');
