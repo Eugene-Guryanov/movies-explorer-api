@@ -2,6 +2,7 @@ const { celebrate, Joi } = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
 const validator = require('validator');
 const BadRequestError = require('../errors/BadRequestError');
+const EmailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const urlValidation = (value) => {
   if (validator.isURL(value)) {
@@ -13,7 +14,7 @@ const urlValidation = (value) => {
 module.exports.userValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    email: Joi.string().required().email(),
+    email: Joi.string().required().regex(EmailRegExp),
     password: Joi.string().required(),
   }),
 });
